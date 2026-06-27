@@ -63,7 +63,10 @@ async function injectBeadsContext(
   context?: { model?: { providerID: string; modelID: string }; agent?: string }
 ): Promise<void> {
   try {
-    const primeOutput = await $`bd prime`.text();
+    let primeOutput = await $`bd prime`.text();
+    if (!primeOutput || primeOutput.trim() === "") {
+      primeOutput = await $`bd prime -C ~/.config/opencode`.text();
+    }
 
     if (!primeOutput || primeOutput.trim() === "") {
       return;
